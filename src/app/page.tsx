@@ -2,19 +2,28 @@
 
 import { useState } from "react";
 import { CenterLabels } from "@/components/center-labels";
-import { CodeInput } from "@/components/code-input";
+import { GuessInput } from "@/components/guess-input";
 import { Footer } from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
+import getRandomState, { State } from "./utils/get-random-state";
 
 export default function Home() {
-  const [code, setCode] = useState("");
+  const [guess, setGuess] = useState("");
 
-  console.log({ code });
+  const state: State = getRandomState();
 
-  const handleCodeComplete = (completedCode: string) => {
-    setCode(completedCode);
-    console.log("Code entered:", completedCode);
-    // You can add your logic here for what to do when the code is complete
+  console.log({ guess });
+
+  const handleGuessComplete = (completedGuess: string) => {
+    setGuess(completedGuess);
+
+    if (completedGuess.toLowerCase() === state.solution.toLowerCase()) {
+      setTimeout(() => {
+        // TODO make win-state, add score
+        alert("You got it!");
+      });
+    }
+    console.log("Guess entered:", completedGuess);
   };
 
   const handleHintClick = () => {
@@ -26,12 +35,12 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <main className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <CenterLabels
-          label1="Enter Code"
-          label2="Security Verification"
+          label1={state.label1}
+          label2={state.label2}
           className="mb-6"
         />
         <Separator className="mb-6" />
-        <CodeInput length={6} onComplete={handleCodeComplete} />
+        <GuessInput length={6} onComplete={handleGuessComplete} />
       </main>
       <Footer onHintClick={handleHintClick} />
     </div>

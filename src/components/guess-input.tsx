@@ -1,26 +1,26 @@
 import React, { useRef, useState } from "react";
 
-interface CodeInputProps {
+interface GuessInputProps {
   length: number;
-  onComplete: (code: string) => void;
+  onComplete: (guess: string) => void;
 }
 
-export function CodeInput({ length, onComplete }: CodeInputProps) {
-  const [code, setCode] = useState(Array(length).fill(""));
+export function GuessInput({ length, onComplete }: GuessInputProps) {
+  const [guess, setGuess] = useState(Array(length).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleChange = (index: number, value: string) => {
     if (value.length <= 1) {
-      const newCode = [...code];
-      newCode[index] = value.toUpperCase();
-      setCode(newCode);
+      const newGuess = [...guess];
+      newGuess[index] = value.toUpperCase();
+      setGuess(newGuess);
 
       if (value && index < length - 1) {
         inputRefs.current[index + 1]?.focus();
       }
 
-      if (newCode.every((char) => char !== "")) {
-        onComplete(newCode.join(""));
+      if (newGuess.every((char) => char !== "")) {
+        onComplete(newGuess.join(""));
       }
     }
   };
@@ -29,14 +29,14 @@ export function CodeInput({ length, onComplete }: CodeInputProps) {
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) {
+    if (e.key === "Backspace" && !guess[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   return (
     <div className="flex justify-center space-x-2">
-      {code.map((char, index) => (
+      {guess.map((char, index) => (
         <input
           key={index}
           ref={(el) => {
