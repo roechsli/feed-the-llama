@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
 import getRandomState from "./utils/get-random-state";
 import { State } from "./states/states";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const [guess, setGuess] = useState("");
@@ -35,11 +36,9 @@ export default function Home() {
     if (completedGuess.toLowerCase() === state?.solution.toLowerCase()) {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
-        setTimeout(() => {
-          // TODO make win-state, add score
-          alert("You got it!");
-        });
-      });
+        // TODO make win-state, add score
+        alert("You got it!");
+      }, 50);
     }
     console.log("Guess entered:", completedGuess);
   };
@@ -90,7 +89,12 @@ export default function Home() {
             isL3Addition={state.isL3Addition}
             className="mb-6"
           />
-        ) : null}
+        ) : (
+          <div className="flex-col items-center align-center">
+            <Skeleton className="h-12 w-full mb-4" />
+            <Skeleton className="h-12 w-full mb-4" />
+          </div>
+        )}
         <Separator className="mb-6" />
         {hints && state ? (
           <GuessInput
@@ -98,7 +102,9 @@ export default function Home() {
             onComplete={handleGuessComplete}
             hints={hints}
           />
-        ) : null}
+        ) : (
+          <Skeleton className="h-12 w-full" />
+        )}
       </main>
       <Footer onHintClick={handleHintClick} />
     </div>
