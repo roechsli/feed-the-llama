@@ -15,11 +15,11 @@ export const states: State[] = [
     solution: "parents",
   },
   {
-    label1: "King",
+    label1: "Queen",
     label2: "Woman",
     isAddition: false,
     label3: "Man",
     isL3Addition: true,
-    solution: "queen",
+    solution: "king",
   },
 ];
