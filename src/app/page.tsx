@@ -35,12 +35,13 @@ export default function Home() {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
         setShowConfetti(true);
+        setHints(state.solution);
       }, 50);
       setShakeInput(false); // Reset the shake if the guess is correct
     } else {
       // Trigger shake animation if the guess is incorrect
       setShakeInput(true);
-      setTimeout(() => setShakeInput(false), 500); // Reset after animation completes
+      setTimeout(() => setShakeInput(false), 500);
     }
   };
 
@@ -85,7 +86,7 @@ export default function Home() {
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center py-10">
       <main className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
-        <Confetti isActive={showConfetti} />
+        {showConfetti ? <Confetti isActive={showConfetti} /> : null}
 
         {state ? (
           <CenterLabels
@@ -104,22 +105,25 @@ export default function Home() {
         )}
         <Separator className="mb-6" />
         {hints && state ? (
-          <div className="flex justify-center relative">
-            <GuessInput
-              length={state.solution.length}
-              onComplete={handleGuessComplete}
-              hints={hints}
-              className={shakeInput ? "shake" : ""} // Add the shake class conditionally
-            />
-
+          <div>
+            <div className="flex justify-center relative">
+              <GuessInput
+                length={state.solution.length}
+                onComplete={handleGuessComplete}
+                hints={hints}
+                className={shakeInput ? "shake text-red-500" : ""} // Add the shake class conditionally
+              />
+            </div>
             {showConfetti ? (
-              <Button
-                onClick={onNextClick}
-                className="absolute bottom-2 right-2 flex items-center space-x-2"
-              >
-                <span>Next</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="py-4 flex items-center justify-center">
+                <Button
+                  onClick={onNextClick}
+                  className="flex bottom-2 right-2 flex items-center space-x-2"
+                >
+                  <span>Next</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             ) : null}
           </div>
         ) : (

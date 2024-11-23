@@ -82,7 +82,7 @@ export const states: State[] = [
     isAddition: false,
     label3: "Winter",
     isL3Addition: true,
-    solution: "winter olympics",
+    solution: "winterolympics",
   },
   {
     label1: "Coffee",
@@ -90,7 +90,7 @@ export const states: State[] = [
     isAddition: false,
     label3: "Cold",
     isL3Addition: true,
-    solution: "iced coffee",
+    solution: "icedcoffee",
   },
   {
     label1: "iPhone",
@@ -98,7 +98,7 @@ export const states: State[] = [
     isAddition: false,
     label3: "Alphabet",
     isL3Addition: true,
-    solution: "Pixel",
+    solution: "pixel",
   },
   {
     label1: "Penguin",
@@ -178,6 +178,6 @@ export const states: State[] = [
     isAddition: false,
     label3: "Ice",
     isL3Addition: true,
-    solution: "polar bear",
+    solution: "polarbear",
   },
 ];

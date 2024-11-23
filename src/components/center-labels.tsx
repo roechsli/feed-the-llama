@@ -30,7 +30,7 @@ export function CenterLabels({
           isAddition ? "text-green-900" : "text-red-900"
         }`}
       >
-        <span className="text-5xl font-bold mr-2">
+        <span className="text-5xl font-bold mr-2 min-w-[28px]">
           {isAddition ? "+" : "-"}
         </span>
         <div className="flex items-center justify-center">
