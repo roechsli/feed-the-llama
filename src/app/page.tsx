@@ -14,10 +14,9 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   const [hints, setHints] = useState<string | null>(null);
-
   const [state, setState] = useState<State | null>(null);
-
   const [showConfetti, setShowConfetti] = useState(false);
+  const [shakeInput, setShakeInput] = useState(false); // State to trigger shake
 
   useEffect(() => {
     if (!state) {
@@ -37,8 +36,11 @@ export default function Home() {
       setTimeout(() => {
         setShowConfetti(true);
       }, 50);
+      setShakeInput(false); // Reset the shake if the guess is correct
     } else {
-      // guess was not correct
+      // Trigger shake animation if the guess is incorrect
+      setShakeInput(true);
+      setTimeout(() => setShakeInput(false), 500); // Reset after animation completes
     }
   };
 
@@ -106,6 +108,7 @@ export default function Home() {
               length={state.solution.length}
               onComplete={handleGuessComplete}
               hints={hints}
+              className={shakeInput ? "shake" : ""} // Add the shake class conditionally
             />
 
             {showConfetti ? (

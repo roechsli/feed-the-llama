@@ -5,9 +5,15 @@ interface GuessInputProps {
   length: number;
   onComplete: (guess: string) => void;
   hints: string; // A string with fixed letters and spaces for hints
+  className?: string;
 }
 
-export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
+export function GuessInput({
+  length,
+  onComplete,
+  hints,
+  className,
+}: GuessInputProps) {
   const [guess, setGuess] = useState(() =>
     hints.split("").map((char) => (char.trim() ? char.toUpperCase() : ""))
   );
@@ -60,7 +66,10 @@ export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
   };
 
   return (
-    <div key={`${length}-${hints}`} className="flex justify-center space-x-2">
+    <div
+      key={`${length}-${hints}`}
+      className={`flex justify-center space-x-2 ${className ? className : ""}`}
+    >
       {guess.map((char, index) => (
         <input
           key={index}

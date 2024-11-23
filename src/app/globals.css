@@ -70,3 +70,31 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Define keyframes for shake animation */
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-15px);
+  }
+
+  50% {
+    transform: translateX(15px);
+  }
+
+  75% {
+    transform: translateX(-15px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Apply the shake animation to elements with a 'shake' class */
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
