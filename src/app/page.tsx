@@ -12,21 +12,27 @@ export default function Home() {
   const [guess, setGuess] = useState("");
   const [hints, setHints] = useState<string | null>(null);
 
+  const [state, setState] = useState<State | null>(null);
+
   // not sure yet how and if this is needed
   console.log({ guess });
 
-  const state: State = getRandomState();
-
   useEffect(() => {
-    if (!hints) {
-      setHints(" ".repeat(state.solution.length));
+    if (!state) {
+      setState(getRandomState);
     }
   }, [state]);
+
+  useEffect(() => {
+    if (!hints && state) {
+      setHints(" ".repeat(state.solution.length));
+    }
+  }, [hints, state]);
 
   const handleGuessComplete = (completedGuess: string) => {
     setGuess(completedGuess);
 
-    if (completedGuess.toLowerCase() === state.solution.toLowerCase()) {
+    if (completedGuess.toLowerCase() === state?.solution.toLowerCase()) {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
         setTimeout(() => {
@@ -41,7 +47,9 @@ export default function Home() {
   const handleHintClick = () => {
     console.log("Hint button clicked");
 
-    if (!hints) return;
+    if (!hints || !state) return;
+
+    console.log({ hints });
 
     // Find the spaces in hints for corresponding letter in the solution
     const possibleHints: number[] = [];
@@ -58,7 +66,7 @@ export default function Home() {
       possibleHints[Math.floor(Math.random() * possibleHints.length)];
     if (hintIndex !== -1) {
       // Replace any remaining space with the corresponding character from the solution
-      const newHints = hints.split("");
+      const newHints = [...hints.split("")];
       newHints[hintIndex] = state.solution[hintIndex];
 
       const newHintsWord = newHints.join("");
@@ -73,16 +81,18 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <main className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <CenterLabels
-          label1={state.label1}
-          label2={state.label2}
-          isAddition={state.isAddition}
-          label3={state.label3}
-          isL3Addition={state.isL3Addition}
-          className="mb-6"
-        />
+        {state ? (
+          <CenterLabels
+            label1={state.label1}
+            label2={state.label2}
+            isAddition={state.isAddition}
+            label3={state.label3}
+            isL3Addition={state.isL3Addition}
+            className="mb-6"
+          />
+        ) : null}
         <Separator className="mb-6" />
-        {hints ? (
+        {hints && state ? (
           <GuessInput
             length={state.solution.length}
             onComplete={handleGuessComplete}
