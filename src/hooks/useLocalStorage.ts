@@ -7,16 +7,16 @@ export type DataItem = {
 };
 
 const MOCK_DATA: DataItem[] = [
-  { word: "queen", guess: "king", occurrence: 7 },
-  { word: "lawyer", guess: "doctor", occurrence: 3 },
-  { word: "madrid", guess: "paris", occurrence: 5 },
-  { word: "shakespeare", guess: "einstein", occurrence: 6 },
-  { word: "artist", guess: "chef", occurrence: 9 },
-  { word: "spacex", guess: "tesla", occurrence: 2 },
-  { word: "picasso", guess: "beethoven", occurrence: 4 },
-  { word: "football", guess: "soccer", occurrence: 8 },
-  { word: "winter olympics", guess: "summer", occurrence: 1 },
-  { word: "iced coffee", guess: "cold", occurrence: 10 },
+  { word: "iced coffee", guess: "cold brew", occurrence: 214 },
+  { word: "lawyer", guess: "physician", occurrence: 184 },
+  { word: "shakespeare", guess: "locke", occurrence: 152 },
+  { word: "queen", guess: "lady", occurrence: 120 },
+  { word: "artist", guess: "designer", occurrence: 101 },
+  { word: "picasso", guess: "dali", occurrence: 97 },
+  { word: "spacex", guess: "flying", occurrence: 43 },
+  { word: "madrid", guess: "capital", occurrence: 32 },
+  { word: "football", guess: "basketball", occurrence: 27 },
+  { word: "winter olympics", guess: "winter games", occurrence: 19 },
 ];
 
 export function useLocalStorage(key: string) {
