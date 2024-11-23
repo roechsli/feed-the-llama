@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Confetti } from "@/components/Confetti";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { FeedTheLlama } from "@/components/ui/logo-text";
 
 export default function Home() {
   const [hints, setHints] = useState<string | null>(null);
@@ -84,6 +85,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <FeedTheLlama />
       <main className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <Confetti isActive={showConfetti} />
         {state ? (
