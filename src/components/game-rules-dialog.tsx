@@ -41,7 +41,8 @@ export default function GameRulesDialog() {
             />
             <p className="text-sm text-muted-foreground">
               You will see a simple word equation. Your task is to figure out
-              the resulting word. Use logic to guess the correct answer.
+              the resulting word. Use logic to guess the correct answer. Omit
+              spaces.
             </p>
             <p className="text-sm">
               Once you think you figured it out, enter your guess to solve the

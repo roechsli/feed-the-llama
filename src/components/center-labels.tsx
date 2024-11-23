@@ -21,7 +21,7 @@ export function CenterLabels({
 }: CenterLabelsProps) {
   return (
     <div className={cn("text-center", className)}>
-      <h1 key={label1} className="text-4xl font-bold mb-2 ml-6">
+      <h1 key={label1} className="text-4xl text-gray-800 font-bold mb-2 ml-6">
         {label1}
       </h1>
 
@@ -30,7 +30,7 @@ export function CenterLabels({
           isAddition ? "text-green-900" : "text-red-900"
         }`}
       >
-        <span className="text-5xl font-bold mr-2 min-w-[28px]">
+        <span className="text-5xl font-bold mr-2 min-w-[30px]">
           {isAddition ? "+" : "-"}
         </span>
         <div className="flex items-center justify-center">
@@ -47,7 +47,7 @@ export function CenterLabels({
             isL3Addition ? "text-green-900" : "text-red-900"
           }`}
         >
-          <span className="text-5xl font-bold mr-2">
+          <span className="text-5xl font-bold mr-2 min-w-[30px]">
             {isL3Addition ? "+" : "-"}
           </span>
           <div className="flex items-center justify-center">
