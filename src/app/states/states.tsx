@@ -17,14 +17,6 @@ export const states: State[] = [
     solution: "queen",
   },
   {
-    label1: "Hitler",
-    label2: "Germany",
-    isAddition: false,
-    label3: "Italy",
-    isL3Addition: true,
-    solution: "mussolini",
-  },
-  {
     label1: "Doctor",
     label2: "Medicine",
     isAddition: false,

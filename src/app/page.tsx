@@ -83,7 +83,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-[50vh] flex flex-col items-center justify-center">
+    <div className="min-h-[50vh] flex flex-col items-center justify-center py-10">
       <main className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
         <Confetti isActive={showConfetti} />
 

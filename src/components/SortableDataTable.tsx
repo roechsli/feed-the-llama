@@ -16,7 +16,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 type SortKey = "word" | "guess" | "occurrence";
 
 export default function SortableDataTable() {
-  const [data, setData] = useLocalStorage("statistics", []);
+  const [data] = useLocalStorage("statistics");
   const [sortKey, setSortKey] = useState<SortKey>("occurrence");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
