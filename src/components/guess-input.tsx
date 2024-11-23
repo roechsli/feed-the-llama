@@ -25,8 +25,14 @@ export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
     newGuess[index] = value.toUpperCase();
     setGuess(newGuess);
 
-    if (value && index < length - 1) {
-      inputRefs.current[index + 1]?.focus();
+    // Find the next editable input
+    let nextIndex = index + 1;
+    while (nextIndex < length && hints[nextIndex] !== " ") {
+      nextIndex++;
+    }
+
+    if (value && nextIndex < length) {
+      inputRefs.current[nextIndex]?.focus();
     }
 
     if (newGuess.every((char) => char !== "")) {
@@ -40,7 +46,14 @@ export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
   ) => {
     if (hints[index] === " ") {
       if (e.key === "Backspace" && !guess[index] && index > 0) {
-        inputRefs.current[index - 1]?.focus();
+        // Find the previous editable input
+        let prevIndex = index - 1;
+        while (prevIndex >= 0 && hints[prevIndex] !== " ") {
+          prevIndex--;
+        }
+        if (prevIndex >= 0) {
+          inputRefs.current[prevIndex]?.focus();
+        }
       }
     }
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CenterLabels } from "@/components/center-labels";
 import { GuessInput } from "@/components/guess-input";
 import { Footer } from "@/components/footer";
@@ -9,21 +9,29 @@ import getRandomState, { State } from "./utils/get-random-state";
 
 export default function Home() {
   const [guess, setGuess] = useState("");
+  const [hints, setHints] = useState<string | null>(null);
+
+  // not sure yet how and if this is needed
+  console.log({ guess });
 
   const state: State = getRandomState();
-  const hints: string = " ".repeat(state.solution.length);
 
-  console.log({ hints });
-
-  console.log({ guess });
+  useEffect(() => {
+    if (!hints) {
+      setHints(" ".repeat(state.solution.length));
+    }
+  }, [hints, state]);
 
   const handleGuessComplete = (completedGuess: string) => {
     setGuess(completedGuess);
 
     if (completedGuess.toLowerCase() === state.solution.toLowerCase()) {
+      // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
-        // TODO make win-state, add score
-        alert("You got it!");
+        setTimeout(() => {
+          // TODO make win-state, add score
+          alert("You got it!");
+        });
       });
     }
     console.log("Guess entered:", completedGuess);
@@ -31,7 +39,34 @@ export default function Home() {
 
   const handleHintClick = () => {
     console.log("Hint button clicked");
-    // Add your hint logic here
+
+    if (!hints) return;
+
+    // Find the spaces in hints for corresponding letter in the solution
+    const possibleHints: number[] = [];
+
+    // Loop through the hints string and collect indices of spaces
+    for (let i = 0; i < hints.length; i++) {
+      if (hints[i] === " ") {
+        possibleHints.push(i); // Add the index of the space to the array
+      }
+    }
+
+    // Example of picking a random index from the possible hints
+    const hintIndex =
+      possibleHints[Math.floor(Math.random() * possibleHints.length)];
+    if (hintIndex !== -1) {
+      // Replace any remaining space with the corresponding character from the solution
+      const newHints = hints.split("");
+      newHints[hintIndex] = state.solution[hintIndex];
+
+      const newHintsWord = newHints.join("");
+      setHints(newHintsWord);
+      console.log({ newHints });
+      if (newHintsWord.toLowerCase() === state.solution.toLowerCase()) {
+        handleGuessComplete(newHintsWord);
+      }
+    }
   };
 
   return (
@@ -43,11 +78,13 @@ export default function Home() {
           className="mb-6"
         />
         <Separator className="mb-6" />
-        <GuessInput
-          length={state.solution.length}
-          onComplete={handleGuessComplete}
-          hints={hints}
-        />
+        {hints ? (
+          <GuessInput
+            length={state.solution.length}
+            onComplete={handleGuessComplete}
+            hints={hints}
+          />
+        ) : null}
       </main>
       <Footer onHintClick={handleHintClick} />
     </div>
