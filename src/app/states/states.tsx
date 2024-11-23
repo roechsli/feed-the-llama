@@ -12,7 +12,7 @@ export const states: State[] = [
     label1: "Man",
     label2: "Woman",
     isAddition: true,
-    solution: "blabla",
+    solution: "parents",
   },
   {
     label1: "King",
@@ -20,6 +20,6 @@ export const states: State[] = [
     isAddition: false,
     label3: "Man",
     isL3Addition: true,
-    solution: "bla",
+    solution: "queen",
   },
 ];
