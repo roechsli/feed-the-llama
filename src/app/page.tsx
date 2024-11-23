@@ -10,12 +10,13 @@ import { State } from "./states/states";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Confetti } from "@/components/Confetti";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import getLinearState from "./utils/get-linear-state";
 
 export default function Home() {
   const [hints, setHints] = useState<string | null>(null);
   const [state, setState] = useState<State | null>(null);
+  const [score, setScore] = useState<number>(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [shakeInput, setShakeInput] = useState(false); // State to trigger shake
 
@@ -52,6 +53,13 @@ export default function Home() {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
         setShowConfetti(true);
+        setScore(
+          (prevScore) =>
+            prevScore +
+            state.solution.length -
+            (hints ?? "").split("").filter((c) => c !== " ").length -
+            1
+        );
         setHints(state.solution);
       }, 50);
       setShakeInput(false); // Reset the shake if the guess is correct
@@ -64,7 +72,12 @@ export default function Home() {
 
   const handleHintClick = () => {
     // return if either one was not initialized yet
-    if (!hints || !state) return;
+    if (
+      !hints ||
+      !state ||
+      hints.toLowerCase() === state.solution.toLowerCase()
+    )
+      return;
 
     // Find the spaces in hints for corresponding letter in the solution
     const possibleHints: number[] = [];
@@ -86,7 +99,6 @@ export default function Home() {
 
       const newHintsWord = newHints.join("");
       setHints(newHintsWord);
-      console.log({ newHints });
       if (newHintsWord.toLowerCase() === state.solution.toLowerCase()) {
         handleGuessComplete(newHintsWord);
       }
@@ -102,8 +114,19 @@ export default function Home() {
 
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center py-10">
-      <main className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
+      <main className="w-full max-w-lg p-6 bg-white rounded-none md:rounded-lg shadow-md">
         {showConfetti ? <Confetti isActive={showConfetti} /> : null}
+        <div className="flex justify-between">
+          <Button
+            onClick={handleHintClick}
+            className="flex items-center space-x-2"
+          >
+            <Search className="w-4 h-4" />
+            <span>Hint</span>
+          </Button>
+
+          <div>Score: {score}</div>
+        </div>
 
         {state ? (
           <CenterLabels
@@ -126,6 +149,7 @@ export default function Home() {
             <div className="flex justify-center relative">
               <GuessInput
                 length={state.solution.length}
+                solution={state.solution}
                 onComplete={handleGuessComplete}
                 hints={hints}
                 className={shakeInput ? "shake text-red-500" : ""} // Add the shake class conditionally
@@ -147,7 +171,7 @@ export default function Home() {
           <Skeleton className="h-12 w-full" />
         )}
       </main>
-      <Footer onHintClick={handleHintClick} />
+      <Footer />
     </div>
   );
 }

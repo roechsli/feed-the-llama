@@ -21,22 +21,22 @@ export function CenterLabels({
 }: CenterLabelsProps) {
   return (
     <div className={cn("text-center", className)}>
-      <h1 key={label1} className="text-4xl text-gray-800 font-bold mb-2 ml-6">
+      <h2 key={label1} className="text-3xl text-gray-800 font-bold mb-2 ml-6">
         {label1}
-      </h1>
+      </h2>
 
       <div
         className={`flex justify-between ${
-          isAddition ? "text-green-900" : "text-red-900"
+          isAddition ? "text-algae-green-600" : "text-vanilla-600"
         }`}
       >
         <span className="text-5xl font-bold mr-2 min-w-[30px]">
           {isAddition ? "+" : "-"}
         </span>
         <div className="flex items-center justify-center">
-          <h1 key={label2} className="text-4xl font-semibold">
+          <h2 key={label2} className="text-3xl font-semibold">
             {label2}
-          </h1>
+          </h2>
         </div>
         <div></div>
       </div>
@@ -44,16 +44,16 @@ export function CenterLabels({
       {label3 !== undefined ? (
         <div
           className={`flex justify-between ${
-            isL3Addition ? "text-green-900" : "text-red-900"
+            isL3Addition ? "text-algae-green-600" : "text-vanilla-600"
           }`}
         >
           <span className="text-5xl font-bold mr-2 min-w-[30px]">
             {isL3Addition ? "+" : "-"}
           </span>
           <div className="flex items-center justify-center">
-            <h1 key={label3} className="text-4xl font-semibold">
+            <h2 key={label3} className="text-3xl font-semibold">
               {label3}
-            </h1>
+            </h2>
           </div>
           <div></div>
         </div>
