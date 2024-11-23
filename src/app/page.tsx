@@ -30,6 +30,20 @@ export default function Home() {
     }
   }, [hints, state]);
 
+  // Add keyboard listener for "Enter" key when showConfetti is true
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (showConfetti && event.key === "Enter") {
+        onNextClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showConfetti]); // Dependency ensures listener runs when showConfetti changes
+
   const handleGuessComplete = (completedGuess: string) => {
     if (completedGuess.toLowerCase() === state?.solution.toLowerCase()) {
       // two timeouts are needed because of hint logic and input update cycle
