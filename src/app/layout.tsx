@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { FeedTheLlama } from "@/components/ui/logo-text";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,9 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        {children}
+        <div className="md:flex-col flex-col-reverse">
+          <FeedTheLlama />
+          {children}
+        </div>
       </body>
     </html>
   );

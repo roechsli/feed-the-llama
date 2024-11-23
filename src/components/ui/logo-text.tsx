@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function FeedTheLlama() {
   return (
-    <div className="absolute top-4 flex flex-row items-center justify-center p-2 rounded-md">
+    <div className="relative top-4 flex flex-row items-center justify-center p-2 rounded-md gap-4">
       <Image
         src="/logo.png"
         alt="Feed the Llama Logo"
