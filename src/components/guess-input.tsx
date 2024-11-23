@@ -22,7 +22,7 @@ export function GuessInput({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    // auto-focus first box
+    // Auto-focus first box
     inputRefs.current[0]?.focus();
   }, []);
 
@@ -46,11 +46,21 @@ export function GuessInput({
     }
 
     if (value && nextIndex < length) {
-      inputRefs.current[nextIndex]?.focus();
+      if (solution[nextIndex] !== " ") {
+        inputRefs.current[nextIndex]?.focus();
+      } else {
+        if (nextIndex + 1 < length) inputRefs.current[nextIndex + 1]?.focus();
+      }
     }
 
-    if (newGuess.every((char) => char !== "")) {
-      onComplete(newGuess.join(""));
+    if (
+      newGuess.filter((char) => char !== "").length ===
+      solution.split("").filter((c) => c !== " ").length
+    ) {
+      // Rebuild the guess string by inserting spaces from the solution
+      const shiftGuess = [...newGuess.map((c) => (c === "" ? " " : c))];
+
+      onComplete(shiftGuess.join(""));
     }
   };
 
@@ -72,36 +82,53 @@ export function GuessInput({
     }
   };
 
+  // Group inputs by words
+  const words = solution.split(" ").map((word, i) => ({
+    word,
+    startIndex: solution.split(" ", i).join(" ").length + (i > 0 ? 1 : 0), // Calculate starting index
+  }));
+
   return (
     <div
       key={`${length}-${hints}`}
-      className={`flex flex-wrap justify-center gap-2 space-x-2 ${
+      className={`flex flex-wrap gap-2 ${
         className ? className : ""
-      }`}
+      } justify-center`}
     >
-      {guess.map((char, index) =>
-        solution[index] === " " ? (
-          // Render a placeholder or empty space for spaces
-          <span key={index} className="w-12 h-12" />
-        ) : (
-          <input
-            key={index}
-            ref={(el) => {
-              inputRefs.current[index] = el;
-            }}
-            type="text"
-            value={char}
-            onChange={(e) => handleChange(index, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
-            className={`w-12 h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
-              hints[index] !== " "
-                ? "bg-green-200 border-green-500 text-green-800"
-                : "border-gray-300 focus:border-blue-500"
-            }`}
-            maxLength={1}
-          />
-        )
-      )}
+      {words.map(({ word, startIndex }) => (
+        <div
+          key={startIndex}
+          className="flex gap-2 flex-shrink flex-nowrap"
+          style={{ flexShrink: 1 }}
+        >
+          {startIndex === 0 ? (
+            <div className="flex text-gray-800 text-5xl font-bold mr-2 min-w-[30px]">
+              {"="}
+            </div>
+          ) : null}
+          {word.split("").map((_, index) => {
+            const charIndex = startIndex + index;
+            return (
+              <input
+                key={charIndex}
+                ref={(el) => {
+                  inputRefs.current[charIndex] = el;
+                }}
+                type="text"
+                value={guess[charIndex]}
+                onChange={(e) => handleChange(charIndex, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(charIndex, e)}
+                className={`w-[calc(100%/10)] h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
+                  hints[charIndex] !== " "
+                    ? "bg-green-200 border-green-500 text-green-800"
+                    : "border-gray-300 focus:border-blue-500"
+                }`}
+                maxLength={1}
+              />
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 }
