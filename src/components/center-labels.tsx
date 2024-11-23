@@ -25,7 +25,11 @@ export function CenterLabels({
         {label1}
       </h1>
 
-      <div className="flex justify-between">
+      <div
+        className={`flex justify-between ${
+          isAddition ? "text-green-900" : "text-red-900"
+        }`}
+      >
         <span className="text-5xl font-bold mr-2">
           {isAddition ? "+" : "-"}
         </span>
@@ -38,7 +42,11 @@ export function CenterLabels({
       </div>
 
       {label3 !== undefined ? (
-        <div className="flex justify-between">
+        <div
+          className={`flex justify-between ${
+            isL3Addition ? "text-green-900" : "text-red-900"
+          }`}
+        >
           <span className="text-5xl font-bold mr-2">
             {isL3Addition ? "+" : "-"}
           </span>

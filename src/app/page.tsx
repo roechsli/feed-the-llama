@@ -11,18 +11,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Confetti } from "@/components/Confetti";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { revalidatePath } from "next/cache";
 
 export default function Home() {
-  const [guess, setGuess] = useState("");
   const [hints, setHints] = useState<string | null>(null);
 
   const [state, setState] = useState<State | null>(null);
 
   const [showConfetti, setShowConfetti] = useState(false);
-
-  // not sure yet how and if this is needed
-  console.log({ guess });
 
   useEffect(() => {
     if (!state) {
@@ -37,23 +32,19 @@ export default function Home() {
   }, [hints, state]);
 
   const handleGuessComplete = (completedGuess: string) => {
-    setGuess(completedGuess);
-
     if (completedGuess.toLowerCase() === state?.solution.toLowerCase()) {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
         setShowConfetti(true);
       }, 50);
+    } else {
+      // guess was not correct
     }
-    console.log("Guess entered:", completedGuess);
   };
 
   const handleHintClick = () => {
-    console.log("Hint button clicked");
-
+    // return if either one was not initialized yet
     if (!hints || !state) return;
-
-    console.log({ hints });
 
     // Find the spaces in hints for corresponding letter in the solution
     const possibleHints: number[] = [];
@@ -83,8 +74,9 @@ export default function Home() {
   };
 
   const onNextClick = () => {
-    setGuess("");
-    setState(getRandomState());
+    // reset the state
+    setState(null);
+    setHints(null);
     setShowConfetti(false);
   };
 
