@@ -30,7 +30,7 @@ export default function GameRulesDialog() {
         <ScrollArea className="max-h-[60vh]">
           <div className="flex flex-col items-center space-y-4">
             <Image
-              src="/placeholder.svg?height=300&width=300"
+              src="/how_to_image.png?height=300&width=300"
               alt="Game rules illustration"
               width={300}
               height={300}
