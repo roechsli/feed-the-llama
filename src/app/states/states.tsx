@@ -13,6 +13,14 @@ export interface State {
 // a new random state.
 export const states: State[] = [
   {
+    label1: "King",
+    label2: "Man",
+    isAddition: false,
+    label3: "Woman",
+    isL3Addition: true,
+    solution: "queen",
+  },
+  {
     label1: "Doctor",
     label2: "Medicine",
     isAddition: false,
@@ -29,12 +37,12 @@ export const states: State[] = [
     solution: "spa",
   },
   {
-    label1: "Penguin",
-    label2: "Cold",
+    label1: "Beethoven",
+    label2: "Music",
     isAddition: false,
-    label3: "Desert",
+    label3: "Painting",
     isL3Addition: true,
-    solution: "camel",
+    solution: "picasso",
   },
   {
     label1: "Paris",
@@ -53,20 +61,20 @@ export const states: State[] = [
     solution: "dracula",
   },
   {
+    label1: "Penguin",
+    label2: "Cold",
+    isAddition: false,
+    label3: "Desert",
+    isL3Addition: true,
+    solution: "camel",
+  },
+  {
     label1: "Cow",
     label2: "Farm",
     isAddition: false,
     label3: "City",
     isL3Addition: true,
     solution: "pigeon",
-  },
-  {
-    label1: "Beethoven",
-    label2: "Music",
-    isAddition: false,
-    label3: "Painting",
-    isL3Addition: true,
-    solution: "picasso",
   },
   {
     label1: "Tesla",
@@ -91,14 +99,6 @@ export const states: State[] = [
     label3: "Muscles",
     isL3Addition: true,
     solution: "bodybuilder",
-  },
-  {
-    label1: "King",
-    label2: "Man",
-    isAddition: false,
-    label3: "Woman",
-    isL3Addition: true,
-    solution: "queen",
   },
   {
     label1: "Einstein",
