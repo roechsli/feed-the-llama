@@ -20,10 +20,14 @@ export function CenterLabels({
   isL3Addition = false,
 }: CenterLabelsProps) {
   return (
-    <div className={cn("text-center", className)}>
-      <h2 key={label1} className="text-3xl text-gray-800 font-bold mb-2 ml-6">
-        {label1}
-      </h2>
+    <div className={cn("text-center mt-2", className)}>
+      <div className="flex justify-between">
+        <span className="min-w-[30px]"></span>
+        <h2 key={label1} className="text-3xl text-gray-800 font-bold">
+          {label1}
+        </h2>
+        <div></div>
+      </div>
 
       <div
         className={`flex justify-between ${
