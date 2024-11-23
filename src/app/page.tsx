@@ -8,12 +8,18 @@ import { Separator } from "@/components/ui/separator";
 import getRandomState from "./utils/get-random-state";
 import { State } from "./states/states";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Confetti } from "@/components/Confetti";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { revalidatePath } from "next/cache";
 
 export default function Home() {
   const [guess, setGuess] = useState("");
   const [hints, setHints] = useState<string | null>(null);
 
   const [state, setState] = useState<State | null>(null);
+
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // not sure yet how and if this is needed
   console.log({ guess });
@@ -36,8 +42,7 @@ export default function Home() {
     if (completedGuess.toLowerCase() === state?.solution.toLowerCase()) {
       // two timeouts are needed because of hint logic and input update cycle
       setTimeout(() => {
-        // TODO make win-state, add score
-        alert("You got it!");
+        setShowConfetti(true);
       }, 50);
     }
     console.log("Guess entered:", completedGuess);
@@ -77,9 +82,16 @@ export default function Home() {
     }
   };
 
+  const onNextClick = () => {
+    setGuess("");
+    setState(getRandomState());
+    setShowConfetti(false);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <main className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <Confetti isActive={showConfetti} />
         {state ? (
           <CenterLabels
             label1={state.label1}
@@ -97,11 +109,23 @@ export default function Home() {
         )}
         <Separator className="mb-6" />
         {hints && state ? (
-          <GuessInput
-            length={state.solution.length}
-            onComplete={handleGuessComplete}
-            hints={hints}
-          />
+          <div className="flex justify-center relative">
+            <GuessInput
+              length={state.solution.length}
+              onComplete={handleGuessComplete}
+              hints={hints}
+            />
+
+            {showConfetti ? (
+              <Button
+                onClick={onNextClick}
+                className="absolute bottom-2 right-2 flex items-center space-x-2"
+              >
+                <span>Next</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            ) : null}
+          </div>
         ) : (
           <Skeleton className="h-12 w-full" />
         )}
