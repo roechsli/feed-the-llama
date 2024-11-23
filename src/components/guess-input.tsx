@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState, useEffect } from "react";
 
 interface GuessInputProps {
@@ -59,7 +60,7 @@ export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div key={`${length}-${hints}`} className="flex justify-center space-x-2">
       {guess.map((char, index) => (
         <input
           key={index}

@@ -5,7 +5,8 @@ import { CenterLabels } from "@/components/center-labels";
 import { GuessInput } from "@/components/guess-input";
 import { Footer } from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
-import getRandomState, { State } from "./utils/get-random-state";
+import getRandomState from "./utils/get-random-state";
+import { State } from "./states/states";
 
 export default function Home() {
   const [guess, setGuess] = useState("");
@@ -20,7 +21,7 @@ export default function Home() {
     if (!hints) {
       setHints(" ".repeat(state.solution.length));
     }
-  }, [hints, state]);
+  }, [state]);
 
   const handleGuessComplete = (completedGuess: string) => {
     setGuess(completedGuess);
@@ -75,6 +76,9 @@ export default function Home() {
         <CenterLabels
           label1={state.label1}
           label2={state.label2}
+          isAddition={state.isAddition}
+          label3={state.label3}
+          isL3Addition={state.isL3Addition}
           className="mb-6"
         />
         <Separator className="mb-6" />
