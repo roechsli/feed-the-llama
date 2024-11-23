@@ -11,6 +11,9 @@ export default function Home() {
   const [guess, setGuess] = useState("");
 
   const state: State = getRandomState();
+  const hints: string = " ".repeat(state.solution.length);
+
+  console.log({ hints });
 
   console.log({ guess });
 
@@ -40,7 +43,11 @@ export default function Home() {
           className="mb-6"
         />
         <Separator className="mb-6" />
-        <GuessInput length={6} onComplete={handleGuessComplete} />
+        <GuessInput
+          length={state.solution.length}
+          onComplete={handleGuessComplete}
+          hints={hints}
+        />
       </main>
       <Footer onHintClick={handleHintClick} />
     </div>

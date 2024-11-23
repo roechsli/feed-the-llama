@@ -3,9 +3,10 @@ import React, { useRef, useState } from "react";
 interface GuessInputProps {
   length: number;
   onComplete: (guess: string) => void;
+  hints: string;
 }
 
-export function GuessInput({ length, onComplete }: GuessInputProps) {
+export function GuessInput({ length, onComplete, hints }: GuessInputProps) {
   const [guess, setGuess] = useState(Array(length).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
