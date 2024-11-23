@@ -128,21 +128,25 @@ export default function Home() {
           <div>Score: {score}</div>
         </div>
 
-        {state ? (
-          <CenterLabels
-            label1={state.label1}
-            label2={state.label2}
-            isAddition={state.isAddition}
-            label3={state.label3}
-            isL3Addition={state.isL3Addition}
-            className="mb-6"
-          />
-        ) : (
-          <div className="flex-col items-center align-center">
-            <Skeleton className="h-12 w-full mb-4" />
-            <Skeleton className="h-12 w-full mb-4" />
-          </div>
-        )}
+        <div className="mt-2">
+          {state ? (
+            <CenterLabels
+              label1={state.label1}
+              label2={state.label2}
+              isAddition={state.isAddition}
+              label3={state.label3}
+              isL3Addition={state.isL3Addition}
+              className="mb-6"
+            />
+          ) : (
+            <div className="flex-col items-center align-center mb-8">
+              <Skeleton className="h-10 w-full mb-2" />
+              <Skeleton className="h-10 w-full mb-2" />
+              <Skeleton className="h-10 w-full mb-2" />
+            </div>
+          )}
+        </div>
+
         <Separator className="mb-6" />
         {hints && state ? (
           <div>
