@@ -7,6 +7,10 @@ export interface State {
   solution: string;
 }
 
+// These states have been generated using the word2vec LLM offline and
+// exported here.
+// In the future, we will integrate this into a running edge function for getting
+// a new random state.
 export const states: State[] = [
   {
     label1: "King",
