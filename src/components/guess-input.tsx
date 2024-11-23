@@ -20,6 +20,11 @@ export function GuessInput({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
+    // auto-focus first box
+    inputRefs.current[0]?.focus();
+  }, []);
+
+  useEffect(() => {
     setGuess(
       hints.split("").map((char) => (char.trim() ? char.toUpperCase() : ""))
     );
@@ -68,7 +73,9 @@ export function GuessInput({
   return (
     <div
       key={`${length}-${hints}`}
-      className={`flex justify-center space-x-2 ${className ? className : ""}`}
+      className={`flex flex-wrap justify-center gap-2 space-x-2 ${
+        className ? className : ""
+      }`}
     >
       {guess.map((char, index) => (
         <input
