@@ -18,7 +18,7 @@ export default function MathEquationInputMask() {
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const equation = `${label1} ${isAddition ? "+" : "-"} ${label2} ${
       isL3Addition ? "+" : "-"
@@ -27,10 +27,43 @@ export default function MathEquationInputMask() {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setResult("Nice word");
+    try {
+      // Construct the payload
+      const payload = {
+        word1: label1,
+        sign1: isAddition ? "1" : "-1",
+        word2: label2,
+        sign2: isL3Addition ? "1" : "-1",
+        word3: label3,
+      };
+
+      // Construct the query string
+      const queryString = new URLSearchParams(payload).toString();
+
+      // Make the GET request with the query string
+      const response = await fetch(
+        `http://34.32.14.159:8080/select-word?${queryString}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      // Parse the response
+      const data = await response.json();
+      console.log("Response from server:", data);
+
+      // Update the result state with the predicted word
+      setResult(data.predicted_word || "No word predicted");
+    } catch (error) {
+      console.error("Error submitting equation:", error);
+      setResult("Error fetching result");
+    } finally {
       setIsLoading(false);
-    }, 2500);
+    }
   };
 
   return (
