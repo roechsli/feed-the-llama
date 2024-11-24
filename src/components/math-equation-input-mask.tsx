@@ -42,7 +42,7 @@ export default function MathEquationInputMask() {
 
       // Make the GET request with the query string
       const response = await fetch(
-        `https://hackatum-be-767195590327.europe-west3.run.app?${queryString}`,
+        `http://34.32.14.159:8080/select-word?${queryString}`,
         {
           method: "GET",
         }

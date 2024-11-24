@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Confetti } from "@/components/Confetti";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Search } from "lucide-react";
-import getLinearState from "./utils/get-linear-state";
+// import getLinearState from "./utils/get-linear-state";
 
 export default function Home() {
   const [hints, setHints] = useState<string | null>(null);
@@ -22,9 +22,9 @@ export default function Home() {
 
   useEffect(() => {
     if (!state) {
-      // setState(getRandomState);
+      setState(getRandomState);
       console.log({ getRandomState });
-      setState(getLinearState);
+      // setState(getLinearState);
     }
   }, [state]);
 
