@@ -31,22 +31,20 @@ export default function MathEquationInputMask() {
       // Construct the payload
       const payload = {
         word1: label1,
-        sign1: isAddition ? "1" : "-1",
+        sign1: isAddition ? 1 : -1,
         word2: label2,
-        sign2: isL3Addition ? "1" : "-1",
+        sign2: isL3Addition ? 1 : -1,
         word3: label3,
       };
 
-      // Construct the query string
-      const queryString = new URLSearchParams(payload).toString();
-
-      // Make the GET request with the query string
-      const response = await fetch(
-        `http://34.32.14.159:8080/select-word?${queryString}`,
-        {
-          method: "GET",
-        }
-      );
+      // Make the POST request with the payload in the body
+      const response = await fetch("http://127.0.0.1:8080/select-word", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
