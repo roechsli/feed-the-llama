@@ -180,4 +180,12 @@ export const states: State[] = [
     isL3Addition: true,
     solution: "polar bear",
   },
+  {
+    label1: "Cheese",
+    label2: "Holes",
+    isAddition: false,
+    label3: "Orange",
+    isL3Addition: true,
+    solution: "cheddar",
+  },
 ];
