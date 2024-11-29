@@ -8,13 +8,13 @@ import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
 
-  // Check if window is available
-  const getStatisticsHref = () => {
-    if (typeof window !== "undefined") {
-      return "//" + window.location.host + "/statistics";
-    }
-    return "/statistics"; // Fallback for SSR
-  };
+  // Generate the protocol-relative URL
+  const statisticsHref =
+    "//" +
+    (typeof window !== "undefined"
+      ? window.location.host
+      : "feed-the-llama.vercel.app") +
+    "/statistics";
 
   return (
     <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100">
@@ -28,7 +28,7 @@ export function Footer() {
         )}
         {pathname === "/statistics" ? null : (
           <Button variant="outline">
-            <Link href={getStatisticsHref()}>{"Statistics"}</Link>
+            <Link href={statisticsHref}>{"Statistics"}</Link>
           </Button>
         )}
         {pathname === "/generate" ? null : (
