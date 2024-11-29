@@ -20,7 +20,9 @@ export function Footer() {
         )}
         {pathname === "/statistics" ? null : (
           <Button variant="outline">
-            <Link href={"/statistics"}>{"Statistics"}</Link>
+            <Link href={"//" + window.location.host + "/statistics"}>
+              {"Statistics"}
+            </Link>
           </Button>
         )}
         {pathname === "/generate" ? null : (
