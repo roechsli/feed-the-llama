@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { FeedTheLlama } from "@/components/ui/logo-text";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <div className="md:flex-col flex-col-reverse">
           <FeedTheLlama />
+          <Analytics />
           {children}
         </div>
       </body>
