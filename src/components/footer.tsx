@@ -8,14 +8,6 @@ import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
 
-  // Generate the protocol-relative URL
-  const statisticsHref =
-    "//" +
-    (typeof window !== "undefined"
-      ? window.location.host
-      : "feed-the-llama.vercel.app") +
-    "/statistics";
-
   return (
     <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100">
       <div className="flex justify-center md:gap-8 gap-4">
@@ -28,7 +20,7 @@ export function Footer() {
         )}
         {pathname === "/statistics" ? null : (
           <Button variant="outline">
-            <Link href={statisticsHref}>{"Statistics"}</Link>
+            <Link href={"/statistics"}>{"Statistics"}</Link>
           </Button>
         )}
         {pathname === "/generate" ? null : (
