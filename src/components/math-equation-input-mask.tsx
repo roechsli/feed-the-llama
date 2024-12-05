@@ -1,12 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toggle } from "@/components/ui/toggle";
 import { Skeleton } from "./ui/skeleton";
+
+const NO_RESULT = "no word found";
+const ERROR_RESULT = "error fetching result";
+
+const isValid = (result: string | null) => {
+  if (!result) return false;
+  return [ERROR_RESULT, NO_RESULT].every((val) => val !== result.toLowerCase());
+};
 
 export default function MathEquationInputMask() {
   const [label1, setLabel1] = useState("");
@@ -17,6 +25,8 @@ export default function MathEquationInputMask() {
 
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const isResultValid = isValid(result);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +72,25 @@ export default function MathEquationInputMask() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onCopyClick = () => {
+    const copyText = `{
+      label1: "${
+        String(label1).charAt(0).toUpperCase() + String(label1).slice(1)
+      }",
+      label2: "${
+        String(label2).charAt(0).toUpperCase() + String(label2).slice(1)
+      }",
+      isAddition: ${isAddition},
+      label3: "${
+        String(label3).charAt(0).toUpperCase() + String(label3).slice(1)
+      }",
+      isL3Addition: ${isL3Addition},
+      solution: "${String(result).toLowerCase()}",
+    },
+    `;
+    navigator.clipboard.writeText(copyText);
   };
 
   return (
@@ -138,8 +167,28 @@ export default function MathEquationInputMask() {
 
       {isLoading ? <Skeleton className="mt-4 p-3" /> : null}
       {result ? (
-        <div className="mt-4 p-3 bg-green-100 rounded-md dark:bg-green-700">
-          <p className="text-sm font-medium text-center">{result}</p>
+        <div className="flex flex-col mt-4 p-3">
+          <div
+            className={`w-full p-3 rounded-md ${
+              isResultValid
+                ? "bg-green-100 dark:bg-green-700"
+                : "bg-red-100 dark:bg-red-700"
+            }`}
+          >
+            <p className="text-sm font-medium text-center">{result}</p>
+          </div>
+
+          {isResultValid ? (
+            <div className="mt-3">
+              <Button
+                onClick={onCopyClick}
+                className="flex items-center space-x-2 bg-gray-400 w-full"
+              >
+                <Copy className="w-4 h-4" />
+                <span>Copy</span>
+              </Button>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </form>
