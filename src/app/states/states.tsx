@@ -188,4 +188,12 @@ export const states: State[] = [
     isL3Addition: true,
     solution: "cheddar",
   },
+  {
+    label1: "Church",
+    label2: "Catholicism",
+    isAddition: false,
+    label3: "Islam",
+    isL3Addition: true,
+    solution: "congregation",
+  },
 ];
