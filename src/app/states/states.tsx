@@ -196,4 +196,12 @@ export const states: State[] = [
     isL3Addition: true,
     solution: "congregation",
   },
+  {
+    label1: "Tiger",
+    label2: "Stripes",
+    isAddition: false,
+    label3: "Dots",
+    isL3Addition: true,
+    solution: "elephants",
+  },
 ];
