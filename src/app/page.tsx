@@ -19,6 +19,7 @@ export default function Home() {
   const [score, setScore] = useState<number>(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [shakeInput, setShakeInput] = useState(false); // State to trigger shake
+  const [singleInputMode, setSingleInputMode] = useState(false);
 
   useEffect(() => {
     if (!state) {
@@ -117,13 +118,23 @@ export default function Home() {
       <main className="w-full max-w-lg p-6 bg-white rounded-none md:rounded-lg shadow-md">
         {showConfetti ? <Confetti isActive={showConfetti} /> : null}
         <div className="flex justify-between">
-          <Button
-            onClick={handleHintClick}
-            className="flex items-center space-x-2"
-          >
-            <Search className="w-4 h-4" />
-            <span>Hint</span>
-          </Button>
+          <div className="flex space-x-2">
+            <Button
+              onClick={handleHintClick}
+              className="flex items-center space-x-2"
+            >
+              <Search className="w-4 h-4" />
+              <span>Hint</span>
+            </Button>
+            
+            <Button
+              onClick={() => setSingleInputMode(!singleInputMode)}
+              variant="outline"
+              className="flex items-center space-x-2"
+            >
+              <span>{singleInputMode ? "Character Mode" : "Word Mode"}</span>
+            </Button>
+          </div>
 
           <div>Score: {score}</div>
         </div>
@@ -157,6 +168,7 @@ export default function Home() {
                 onComplete={handleGuessComplete}
                 hints={hints}
                 className={shakeInput ? "shake text-red-500" : ""} // Add the shake class conditionally
+                singleInputMode={singleInputMode}
               />
             </div>
             {showConfetti ? (

@@ -7,6 +7,7 @@ interface GuessInputProps {
   onComplete: (guess: string) => void;
   hints: string; // A string with fixed letters and spaces for hints
   className?: string;
+  singleInputMode?: boolean; // New prop to toggle between modes
 }
 
 export function GuessInput({
@@ -15,22 +16,38 @@ export function GuessInput({
   onComplete,
   hints,
   className,
+  singleInputMode = false, // Default to the original mode
 }: GuessInputProps) {
   const [guess, setGuess] = useState(() =>
     hints.split("").map((char) => (char.trim() ? char.toUpperCase() : ""))
   );
+  const [singleInputValue, setSingleInputValue] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     // Auto-focus first box
-    inputRefs.current[0]?.focus();
-  }, []);
+    if (!singleInputMode) {
+      inputRefs.current[0]?.focus();
+    }
+  }, [singleInputMode]);
 
   useEffect(() => {
     setGuess(
       hints.split("").map((char) => (char.trim() ? char.toUpperCase() : ""))
     );
+    // Reset single input value when hints change
+    setSingleInputValue("");
   }, [hints]);
+
+  const handleSingleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSingleInputValue(value);
+    
+    // Check if the guess is complete
+    if (value.toLowerCase() === solution.toLowerCase()) {
+      onComplete(value);
+    }
+  };
 
   const handleChange = (index: number, value: string) => {
     if (hints[index] !== " " || value.length > 1) return; // Prevent changing hint values
@@ -95,40 +112,58 @@ export function GuessInput({
         className ? className : ""
       } justify-center`}
     >
-      {words.map(({ word, startIndex }) => (
-        <div
-          key={startIndex}
-          className="flex gap-2 flex-shrink flex-nowrap"
-          style={{ flexShrink: 1 }}
-        >
-          {startIndex === 0 ? (
-            <div className="flex text-gray-800 text-5xl font-bold mr-2 min-w-[30px]">
-              {"="}
-            </div>
-          ) : null}
-          {word.split("").map((_, index) => {
-            const charIndex = startIndex + index;
-            return (
-              <input
-                key={charIndex}
-                ref={(el) => {
-                  inputRefs.current[charIndex] = el;
-                }}
-                type="text"
-                value={guess[charIndex]}
-                onChange={(e) => handleChange(charIndex, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(charIndex, e)}
-                className={`w-[calc(100%/10)] h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
-                  hints[charIndex] !== " "
-                    ? "bg-green-200 border-green-500 text-green-800"
-                    : "border-gray-300 focus:border-blue-500"
-                }`}
-                maxLength={1}
-              />
-            );
-          })}
+      {singleInputMode ? (
+        // Single input field mode
+        <div className="flex w-full">
+          <div className="flex text-gray-800 text-5xl font-bold mr-2 min-w-[30px]">
+            {"="}
+          </div>
+          <input
+            type="text"
+            value={singleInputValue}
+            onChange={handleSingleInputChange}
+            className="w-full h-12 text-center text-2xl border-2 rounded-md focus:outline-none border-gray-300 focus:border-blue-500"
+            placeholder="Type your guess here"
+            autoFocus
+          />
         </div>
-      ))}
+      ) : (
+        // Original mode with individual input fields
+        words.map(({ word, startIndex }) => (
+          <div
+            key={startIndex}
+            className="flex gap-2 flex-shrink flex-nowrap"
+            style={{ flexShrink: 1 }}
+          >
+            {startIndex === 0 ? (
+              <div className="flex text-gray-800 text-5xl font-bold mr-2 min-w-[30px]">
+                {"="}
+              </div>
+            ) : null}
+            {word.split("").map((_, index) => {
+              const charIndex = startIndex + index;
+              return (
+                <input
+                  key={charIndex}
+                  ref={(el) => {
+                    inputRefs.current[charIndex] = el;
+                  }}
+                  type="text"
+                  value={guess[charIndex]}
+                  onChange={(e) => handleChange(charIndex, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(charIndex, e)}
+                  className={`w-[calc(100%/10)] h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
+                    hints[charIndex] !== " "
+                      ? "bg-green-200 border-green-500 text-green-800"
+                      : "border-gray-300 focus:border-blue-500"
+                  }`}
+                  maxLength={1}
+                />
+              );
+            })}
+          </div>
+        ))
+      )}
     </div>
   );
 }
