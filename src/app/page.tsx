@@ -126,13 +126,15 @@ export default function Home() {
         {showConfetti ? <Confetti isActive={showConfetti} /> : null}
         <div className="flex justify-between">
           <div className="flex space-x-2">
-            <Button
-              onClick={handleHintClick}
-              className="flex items-center space-x-2"
-            >
-              <Search className="w-4 h-4" />
-              <span>Hint</span>
-            </Button>
+            {!singleInputMode && (
+              <Button
+                onClick={handleHintClick}
+                className="flex items-center space-x-2"
+              >
+                <Search className="w-4 h-4" />
+                <span>Hint</span>
+              </Button>
+            )}
             
             <Button
               onClick={() => setSingleInputMode(!singleInputMode)}
