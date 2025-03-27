@@ -43,10 +43,8 @@ export function GuessInput({
     const value = e.target.value;
     setSingleInputValue(value);
     
-    // Check if the guess is complete
-    if (value.toLowerCase() === solution.toLowerCase()) {
-      onComplete(value);
-    }
+    // Remove the automatic submission when the input value matches the solution
+    // The submission should only happen when the user presses Enter
   };
 
   const handleSingleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
