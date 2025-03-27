@@ -141,7 +141,7 @@ export default function Home() {
               variant="outline"
               className="flex items-center space-x-2"
             >
-              <span>{singleInputMode ? "Character Mode" : "Word Mode"}</span>
+              <span>{singleInputMode ? "Easy Mode" : "Hard Mode"}</span>
             </Button>
           </div>
 
