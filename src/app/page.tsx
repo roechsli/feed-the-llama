@@ -62,6 +62,13 @@ export default function Home() {
             1
         );
         setHints(state.solution);
+        
+        // If in single input mode, automatically move to next puzzle after a delay
+        if (singleInputMode) {
+          setTimeout(() => {
+            onNextClick();
+          }, 1500); // Delay to show confetti animation
+        }
       }, 50);
       setShakeInput(false); // Reset the shake if the guess is correct
     } else {
