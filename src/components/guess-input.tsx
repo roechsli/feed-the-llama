@@ -49,6 +49,13 @@ export function GuessInput({
     }
   };
 
+  const handleSingleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && singleInputValue.trim() !== "") {
+      // Submit the guess when Enter key is pressed
+      onComplete(singleInputValue);
+    }
+  };
+
   const handleChange = (index: number, value: string) => {
     if (hints[index] !== " " || value.length > 1) return; // Prevent changing hint values
 
@@ -122,6 +129,7 @@ export function GuessInput({
             type="text"
             value={singleInputValue}
             onChange={handleSingleInputChange}
+            onKeyDown={handleSingleInputKeyDown}
             className="w-full h-12 text-center text-2xl border-2 rounded-md focus:outline-none border-gray-300 focus:border-blue-500"
             placeholder="Type your guess here"
             autoFocus
