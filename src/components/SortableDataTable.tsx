@@ -54,8 +54,8 @@ export default function SortableDataTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedData.map((item, index) => (
-            <TableRow key={index}>
+          {sortedData.map((item) => (
+            <TableRow key={item.word}>
               <TableCell>{item.word}</TableCell>
               <TableCell>{item.guess}</TableCell>
               <TableCell>{item.occurrence}</TableCell>

@@ -53,7 +53,7 @@ export const states: State[] = [
     solution: "madrid",
   },
   {
-    label1: "Santa Clause",
+    label1: "Santa Claus",
     label2: "Christmas",
     isAddition: false,
     label3: "Halloween",

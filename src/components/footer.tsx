@@ -11,21 +11,20 @@ export function Footer() {
   return (
     <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100">
       <div className="flex justify-center md:gap-8 gap-4">
-        {pathname === "/" ? null : null}
         <GameDialog />
         {pathname === "/" ? null : (
-          <Button variant="outline">
-            <Link href={"/"}>{"Play"}</Link>
+          <Button variant="outline" asChild>
+            <Link href="/">Play</Link>
           </Button>
         )}
         {pathname === "/statistics" ? null : (
-          <Button variant="outline">
-            <Link href={"/statistics"}>{"Statistics"}</Link>
+          <Button variant="outline" asChild>
+            <Link href="/statistics">Statistics</Link>
           </Button>
         )}
         {pathname === "/generate" ? null : (
-          <Button variant="outline">
-            <Link href={"/generate"}>{"Generate"}</Link>
+          <Button variant="outline" asChild>
+            <Link href="/generate">Generate</Link>
           </Button>
         )}
       </div>

@@ -19,6 +19,26 @@ const MOCK_DATA: DataItem[] = [
   { word: "winter olympics", guess: "winter games", occurrence: 19 },
 ];
 
+function isDataItem(value: unknown): value is DataItem {
+  if (typeof value !== "object" || value === null) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.word === "string" &&
+    typeof v.guess === "string" &&
+    typeof v.occurrence === "number"
+  );
+}
+
+function parseStoredData(raw: string): DataItem[] {
+  const parsed: unknown = JSON.parse(raw);
+  if (Array.isArray(parsed) && parsed.every(isDataItem)) {
+    return parsed;
+  }
+  // Data shape doesn't match — fall back to mock data to avoid runtime crashes
+  console.warn("useLocalStorage: stored data has an unexpected shape; resetting to defaults.");
+  return MOCK_DATA;
+}
+
 export function useLocalStorage(key: string) {
   const [storedValue, setStoredValue] = useState<DataItem[]>(() => {
     if (typeof window === "undefined") {
@@ -26,9 +46,9 @@ export function useLocalStorage(key: string) {
     }
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : MOCK_DATA;
+      return item ? parseStoredData(item) : MOCK_DATA;
     } catch (error) {
-      console.log(error);
+      console.error("useLocalStorage: failed to read from localStorage:", error);
       return MOCK_DATA;
     }
   });
@@ -38,7 +58,7 @@ export function useLocalStorage(key: string) {
       const valueToStore = storedValue.length > 0 ? storedValue : MOCK_DATA;
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
-      console.log(error);
+      console.error("useLocalStorage: failed to write to localStorage:", error);
     }
   }, [key, storedValue]);
 

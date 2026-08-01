@@ -32,24 +32,27 @@ export function GuessInput({
   }, [singleInputMode]);
 
   useEffect(() => {
-    setGuess(
-      hints.split("").map((char) => (char.trim() ? char.toUpperCase() : ""))
+    // When a hint is revealed, only overwrite positions that now have a hint
+    // character — preserve everything the user has already typed elsewhere.
+    setGuess((prevGuess) =>
+      hints.split("").map((char, i) =>
+        char.trim()
+          ? char.toUpperCase() // hint character — always authoritative
+          : (prevGuess[i] ?? "") // blank slot — keep the user's typed value
+      )
     );
-    // Reset single input value when hints change
-    setSingleInputValue("");
+    // Reset single-input text only when the puzzle resets (all spaces = new puzzle)
+    if (hints.split("").every((c) => c === " ")) {
+      setSingleInputValue("");
+    }
   }, [hints]);
 
   const handleSingleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSingleInputValue(value);
-    
-    // Remove the automatic submission when the input value matches the solution
-    // The submission should only happen when the user presses Enter
+    setSingleInputValue(e.target.value);
   };
 
   const handleSingleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && singleInputValue.trim() !== "") {
-      // Submit the guess when Enter key is pressed
       onComplete(singleInputValue);
     }
   };
@@ -107,12 +110,15 @@ export function GuessInput({
   // Group inputs by words
   const words = solution.split(" ").map((word, i) => ({
     word,
-    startIndex: solution.split(" ", i).join(" ").length + (i > 0 ? 1 : 0), // Calculate starting index
+    startIndex: solution.split(" ", i).join(" ").length + (i > 0 ? 1 : 0),
   }));
 
   return (
+    // key uses only `length` so React remounts on a new puzzle but NOT on
+    // every hint reveal — remounting on hint change caused focus loss and
+    // cleared all of the user's already-typed characters.
     <div
-      key={`${length}-${hints}`}
+      key={length}
       className={`flex flex-wrap gap-2 ${
         className ? className : ""
       } justify-center`}
@@ -130,15 +136,16 @@ export function GuessInput({
             onKeyDown={handleSingleInputKeyDown}
             className="w-full h-12 text-center text-2xl border-2 rounded-md focus:outline-none border-gray-300 focus:border-blue-500"
             placeholder="Type your guess here"
+            aria-label="Type your answer and press Enter"
             autoFocus
           />
         </div>
       ) : (
         // Original mode with individual input fields
-        words.map(({ word, startIndex }) => (
+        words.map(({ word, startIndex }, wordIdx) => (
           <div
             key={startIndex}
-            className="flex gap-2 flex-shrink flex-nowrap"
+            className="flex gap-1 flex-shrink flex-nowrap"
             style={{ flexShrink: 1 }}
           >
             {startIndex === 0 ? (
@@ -148,6 +155,7 @@ export function GuessInput({
             ) : null}
             {word.split("").map((_, index) => {
               const charIndex = startIndex + index;
+              const isHint = hints[charIndex] !== " ";
               return (
                 <input
                   key={charIndex}
@@ -158,8 +166,10 @@ export function GuessInput({
                   value={guess[charIndex]}
                   onChange={(e) => handleChange(charIndex, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(charIndex, e)}
-                  className={`w-[calc(100%/10)] h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
-                    hints[charIndex] !== " "
+                  aria-label={`Letter ${index + 1} of ${word.length}, word ${wordIdx + 1}${isHint ? " (revealed)" : ""}`}
+                  readOnly={isHint}
+                  className={`w-8 sm:w-10 h-12 text-center text-2xl border-2 rounded-md focus:outline-none ${
+                    isHint
                       ? "bg-green-200 border-green-500 text-green-800"
                       : "border-gray-300 focus:border-blue-500"
                   }`}

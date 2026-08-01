@@ -30,11 +30,6 @@ export default function MathEquationInputMask() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const equation = `${label1} ${isAddition ? "+" : "-"} ${label2} ${
-      isL3Addition ? "+" : "-"
-    } ${label3}`;
-    console.log("Submitted equation:", equation);
-
     setIsLoading(true);
 
     try {
@@ -47,8 +42,12 @@ export default function MathEquationInputMask() {
         word3: label3,
       };
 
-      // Make the POST request with the payload in the body
-      const response = await fetch("http://127.0.0.1:8080/select-word", {
+      // Make the POST request with the payload in the body.
+      // The API base URL is configured via NEXT_PUBLIC_GENERATE_API_URL;
+      // it defaults to localhost for development use only.
+      const apiBase =
+        process.env.NEXT_PUBLIC_GENERATE_API_URL ?? "http://127.0.0.1:8080";
+      const response = await fetch(`${apiBase}/select-word`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +61,6 @@ export default function MathEquationInputMask() {
 
       // Parse the response
       const data = await response.json();
-      console.log("Response from server:", data);
 
       // Update the result state with the predicted word
       setResult(data.predicted_word || "No word predicted");
